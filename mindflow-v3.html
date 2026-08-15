@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MindFlow — visual operating system for thinking</title>
+<meta name="description" content="MindFlow превращает мысли в живую карту связей.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap');
+:root{
+ --bg:#050507;--bg2:#09090e;--panel:#0d0d13;--panel2:#111018;--line:#26232f;
+ --text:#f7f5fb;--muted:#97939f;--purple:#9b67ff;--purple2:#6d43d8;
+ --green:#53d29a;--orange:#ff9b52;--blue:#62aaff;--pink:#ed77ff;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",system-ui,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}
+
+/* LANDING */
+.landing{min-height:100vh;background:radial-gradient(circle at 72% 22%,#512ca31c,transparent 29%),#050507}
+.landing-shell{min-height:100vh;display:grid;grid-template-columns:136px 1fr;max-width:1536px;margin:auto;border:1px solid #111118;border-radius:0 0 34px 34px;overflow:hidden}
+.landing-side{border-right:1px solid #17171f;display:flex;flex-direction:column;align-items:center;padding:34px 20px}
+.logo{width:34px;height:34px;border:2px solid #fff;border-radius:50%;position:relative}.logo:after{content:"";position:absolute;width:14px;height:14px;border:2px solid #fff;border-radius:50%;right:-7px;bottom:-3px;background:var(--bg)}
+.lnav{margin-top:78px;display:flex;flex-direction:column;gap:31px;width:100%}.lnav a{color:#777481;text-decoration:none;text-align:center;font-size:14px}.lnav a:hover{color:#fff}.scroll{margin-top:auto;color:#66636e;text-align:center;font-size:11px;line-height:1.5}
+.landing-main{min-width:0}.hero{min-height:730px;padding:90px 7vw 70px;display:grid;grid-template-columns:1fr 1.05fr;align-items:center;gap:15px}
+.eyebrow{display:inline-flex;gap:9px;align-items:center;border:1px solid #393441;border-radius:999px;padding:9px 14px;color:#c9c5d2;font-size:13px;background:#09090d;margin-bottom:28px}.dot{width:7px;height:7px;border-radius:50%;background:var(--purple);box-shadow:0 0 13px var(--purple)}
+h1{font-size:clamp(54px,6.4vw,94px);line-height:.96;letter-spacing:-.055em;font-weight:500;margin:0 0 25px;max-width:760px}h1 em{font-family:"Playfair Display",serif;color:#a879ff}
+.hero-copy p{max-width:520px;color:#9d99a8;font-size:17px;line-height:1.65;margin:0 0 34px}
+.cta{display:inline-flex;align-items:center;gap:18px;border:0;border-radius:999px;background:#fff;color:#08080a;padding:15px 17px 15px 22px;font-weight:600}.cta span{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#a879ff;color:#fff}.cta:hover{transform:translateY(-2px)}
+.hero-meta{display:flex;gap:40px;margin-top:45px;color:#888492;font-size:13px}.stars{color:#f2c94c;letter-spacing:2px}
+.hero-visual{height:590px;position:relative;display:grid;place-items:center}.orb{width:min(470px,72%);aspect-ratio:1;border-radius:47% 53% 55% 45%;background:radial-gradient(circle at 35% 28%,#d4c1ff99 0 4%,#8b5cf066 19%,#44208c55 48%,transparent 70%),radial-gradient(circle at 67% 62%,#7651dc88,transparent 55%);box-shadow:0 0 110px #7d51e733,inset 0 0 90px #c0a8ff22;animation:float 7s ease-in-out infinite;position:relative}.orb:before,.orb:after{content:"";position:absolute;border:1px solid #8059c73d;border-radius:50%;inset:-70px;transform:rotate(24deg)}.orb:after{inset:-115px;transform:rotate(-33deg);border-color:#68539a2e}
+.hero-node{position:absolute;padding:10px 15px;border:1px solid #5d4c85;background:#101019e8;backdrop-filter:blur(12px);border-radius:13px;font-size:13px;box-shadow:0 12px 35px #0008}.hn1{top:75px;right:20%}.hn2{right:2%;top:240px;border-color:#3b73b4}.hn3{left:8%;top:290px;border-color:#2b8c62}.hn4{bottom:110px;left:29%;border-color:#7952c8}.hn5{right:8%;bottom:65px;border-color:#a76b30}
+.steps{margin:0 6.8vw 85px;border:1px solid #202029;border-radius:26px;padding:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:25px;background:#08080d}.step .num{display:grid;place-items:center;width:38px;height:38px;background:#171126;border-radius:10px;color:#a980ff;font-size:13px;margin-bottom:28px}.step h3{font-size:17px;margin:0 0 9px}.step p{margin:0;color:#85818f;line-height:1.6;font-size:14px}
+.landing-section{padding:80px 7vw 120px}.landing-section h2{font-size:clamp(42px,5vw,72px);line-height:1;letter-spacing:-.05em;font-weight:500;margin:0 0 20px}.landing-section h2 em{font-family:"Playfair Display";color:#a879ff}.landing-section p{color:#92909d;line-height:1.7;max-width:620px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:45px}.feature{border:1px solid #22202a;border-radius:20px;padding:24px;background:#09090e}.feature b{display:block;margin-bottom:9px}.feature span{color:#85818f;font-size:13px;line-height:1.6}.landing-footer{padding:30px 7vw 40px;border-top:1px solid #17171f;color:#686572;font-size:12px;display:flex;justify-content:space-between}
+@keyframes float{50%{transform:translateY(-12px) rotate(2deg) scale(1.025)}}
+
+/* APP */
+.app{height:100vh;display:grid;grid-template-columns:70px 1fr 315px;background:#07070a;overflow:hidden}.app.catalog-mode{grid-template-columns:70px 1fr}.app.catalog-mode .inspector{display:none}
+.app-side{border-right:1px solid #1b1a22;background:#07070a;display:flex;flex-direction:column;align-items:center;padding:18px 0;gap:12px;z-index:20}.app-side .logo{margin-bottom:12px}.side-btn{width:43px;height:43px;border:0;border-radius:12px;background:transparent;color:#777481;font-size:19px}.side-btn:hover,.side-btn.active{background:#171222;color:#fff}.side-spacer{flex:1}
+.app-main{min-width:0;display:flex;flex-direction:column}.topbar{height:66px;flex:0 0 66px;border-bottom:1px solid #1b1a22;display:flex;align-items:center;padding:0 20px;gap:9px}.brand{font-weight:600;margin-right:auto}.brand span{color:var(--purple)}.save-status{color:#777481;font-size:11px;margin-right:5px}.top-btn{border:1px solid #2b2934;background:#0c0c11;color:#bdb9c5;border-radius:9px;padding:8px 11px}top-btn:hover{border-color:#63488f;color:#fff}
+.canvas-wrap{position:relative;flex:1;min-height:0;overflow:hidden;background-image:linear-gradient(#ffffff04 1px,transparent 1px),linear-gradient(90deg,#ffffff04 1px,transparent 1px);background-size:40px 40px;touch-action:none}
+.canvas-wrap:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,#7544df0b,transparent 42%)}
+.world{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:0 0}.edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.edge{stroke:#5c487f;stroke-width:2;opacity:.8}.edge.sel{stroke:#b98eff;stroke-width:3}.edge-hit{stroke:transparent;stroke-width:20;pointer-events:stroke;cursor:pointer}.edge-action{position:absolute;z-index:12;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #4a354f;background:#151018;color:#ff9aaa;border-radius:8px;font-size:10px;box-shadow:0 10px 25px #0008}.edge-action:hover{background:#24121b;border-color:#b55a73}.edge-action .edge-kind{color:#aaa3b3}.ai-card{border:1px solid #3a2b52!important;background:linear-gradient(145deg,#110d19,#0c0c11)!important}.ai-title{display:flex;align-items:center;gap:7px}.ai-spark{color:#b887ff}.ai-input{display:flex;gap:6px;margin-top:10px}.ai-input input{flex:1;min-width:0;border:1px solid #2b2934;background:#0b0b10;color:#eee;border-radius:8px;padding:8px;font-size:11px;outline:none}.ai-input button{border:1px solid #4b3770;background:#211535;color:#d8c8f5;border-radius:8px;padding:7px 9px;font-size:11px}.ai-answer{margin-top:9px;color:#a7a1b1;font-size:11px;line-height:1.55}.ai-action{margin-top:7px;width:100%;text-align:left;border:1px solid #29232f;background:#0d0c12;color:#bdb6c8;border-radius:8px;padding:8px;font-size:10px}.ai-action:hover{border-color:#65488b;color:#fff}
+.node{position:absolute;min-width:145px;max-width:235px;padding:13px 15px;border:1px solid #3a3547;border-radius:15px;background:linear-gradient(145deg,#15121d,#0d0d12);box-shadow:0 12px 35px #0009;cursor:grab;user-select:none}.node:active{cursor:grabbing}.node.selected{border-color:#a678ff;box-shadow:0 0 0 2px #9a68ff22,0 18px 50px #000}.node.dim{opacity:.16}.node .type{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:6px}.node .title{font-size:15px;font-weight:600}.node .body{font-size:12px;color:#8d8998;margin-top:6px;line-height:1.45}.node.idea{border-left:3px solid var(--purple)}.node.note{border-left:3px solid var(--green)}.node.task{border-left:3px solid var(--orange)}.node.project{border-left:3px solid var(--blue)}.node.person{border-left:3px solid var(--pink)}
+.port{position:absolute;width:14px;height:14px;border-radius:50%;background:#0b0b10;border:2px solid #7f60aa;opacity:0;transition:.12s;z-index:5}.node:hover .port,.node.selected .port,.node.connecting .port{opacity:1}.port:hover{background:#b18aff;border-color:#fff;box-shadow:0 0 15px #9b67ff}.port.top{left:50%;top:-7px;transform:translateX(-50%)}.port.right{right:-7px;top:50%;transform:translateY(-50%)}.port.bottom{left:50%;bottom:-7px;transform:translateX(-50%)}.port.left{left:-7px;top:50%;transform:translateY(-50%)}
+.canvas-ai{position:absolute;left:16px;top:16px;padding:9px 12px;border:1px solid #3c2b52;background:#100c17;color:#c9b0f0;border-radius:9px;font-size:11px;z-index:15;box-shadow:0 8px 24px #0005}.canvas-ai:hover{border-color:#7953a4;color:#fff}.canvas-help{position:absolute;left:16px;bottom:16px;padding:8px 11px;border:1px solid #211f29;border-radius:9px;background:#08080dcc;color:#66636f;font-size:10px;pointer-events:none}.zoom-ui{position:absolute;right:16px;bottom:16px;display:flex;gap:5px;background:#08080dcc;border:1px solid #211f29;border-radius:10px;padding:5px}.zoom-ui button{width:31px;height:29px;border:0;background:#111018;color:#aaa5b3;border-radius:7px}.zoom-ui span{min-width:48px;display:grid;place-items:center;font-size:10px;color:#777481}
+.empty-app{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;color:#777481;pointer-events:none}.empty-app b{display:block;color:#e3dfea;font-size:19px;margin-bottom:7px}.empty-app p{font-size:12px;line-height:1.55;max-width:330px}
+.inspector{border-left:1px solid #1b1a22;background:#09090d;display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}.ins-head{padding:16px 17px;border-bottom:1px solid #1b1a22;position:relative}.ins-head-row{display:flex;align-items:center;justify-content:space-between}.ins-head h2{font-size:17px;margin:0 0 4px}.ins-head p{font-size:11px;color:#777481;margin:0}.close-btn{width:36px;height:36px;border:1px solid #2d2a36;background:#111118;color:#d8d4df;border-radius:10px;font-size:19px}.close-btn:hover{border-color:#7650a7;background:#191520}.ins-tools{padding:13px;border-bottom:1px solid #1b1a22;display:grid;grid-template-columns:1fr 1fr;gap:7px}.ins-tool{border:1px solid #2a2833;background:#0e0e14;color:#bbb7c3;border-radius:9px;padding:10px;text-align:left}.ins-tool.primary{background:#8f5be8;color:#fff;border-color:#8f5be8}.ins-body{padding:14px;overflow-y:auto;overflow-x:hidden;flex:1 1 auto;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable}.search{width:100%;border:1px solid #2b2934;background:#0d0d13;color:#eee;border-radius:9px;padding:10px;margin-bottom:15px;outline:none}.search:focus{border-color:#7651a5}.field{margin-bottom:14px}.field label{display:block;color:#777481;font-size:10px;margin-bottom:7px;letter-spacing:.05em}.field input,.field textarea,.field select{width:100%;border:1px solid #2b2934;background:#0d0d13;color:#eee;border-radius:9px;padding:10px;outline:none}.field textarea{min-height:82px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:#7651a5}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.conn{display:flex;justify-content:space-between;align-items:center;padding:8px 9px;border:1px solid #211f29;border-radius:8px;margin-bottom:6px;color:#aaa5b2;font-size:11px}.conn button{border:0;background:none;color:#777381}.danger{width:100%;border:1px solid #4b202b;background:#1a0d11;color:#ff8295;border-radius:9px;padding:10px}.ins-empty{padding:12px;border:1px dashed #292631;border-radius:11px;color:#777481;font-size:11px;line-height:1.6}.insight{padding:12px;border:1px solid #322744;border-radius:11px;background:#0f0c17;color:#aaa5b4;font-size:11px;line-height:1.55;margin-bottom:8px}.insight b{color:#dcd5e7;display:block;margin-bottom:4px}
+.backdrop{display:none}
+
+
+/* AUTH / PROJECTS / ONBOARDING */
+.auth-overlay,.tour-overlay{position:fixed;inset:0;z-index:500;display:grid;place-items:center;background:#000b;backdrop-filter:blur(10px);padding:20px}.auth-card,.tour-card{width:min(520px,94vw);border:1px solid #30283d;border-radius:24px;background:linear-gradient(145deg,#12101a,#09090e);box-shadow:0 30px 100px #000b;padding:30px}.auth-card h2,.tour-card h2{margin:0 0 9px;font-size:28px;letter-spacing:-.03em}.auth-card p,.tour-card p{color:#96919f;line-height:1.65;font-size:13px;margin:0 0 22px}.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #3a3544;background:#fff;color:#111;border-radius:12px;padding:12px 15px;font-weight:600}.google-mark{font-weight:800;font-size:18px}.auth-note{margin-top:14px!important;font-size:11px!important;color:#716c79!important}.auth-close,.tour-close{float:right;width:34px;height:34px;border:1px solid #2d2935;background:#111018;color:#d8d4df;border-radius:9px}.tour-progress{display:flex;gap:6px;margin:20px 0}.tour-progress span{height:4px;flex:1;border-radius:999px;background:#24202b}.tour-progress span.active{background:var(--purple)}.tour-actions{display:flex;justify-content:space-between;gap:8px;margin-top:24px}.tour-actions button,.project-card button,.catalog-new{border:1px solid #2d2936;background:#111018;color:#c9c4d1;border-radius:10px;padding:10px 13px}.tour-actions .primary,.catalog-new{background:#8f5be8;border-color:#8f5be8;color:#fff}.tour-skip{border:0!important;background:transparent!important;color:#777481!important}.app-view-hidden{display:none!important}.projects-view{flex:1;min-height:0;overflow:auto;padding:30px 34px 50px;background:radial-gradient(circle at 65% 5%,#512ca30b,transparent 35%)}.catalog-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px}.catalog-head h1{font-size:36px;line-height:1;margin:0 0 7px;letter-spacing:-.04em}.catalog-head p{margin:0;color:#777481;font-size:12px}.catalog-actions{display:flex;gap:8px}.catalog-search{width:min(330px,40vw);border:1px solid #2b2934;background:#0d0d13;color:#eee;border-radius:10px;padding:11px 12px;outline:none}.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}.project-card{min-height:170px;border:1px solid #24212d;border-radius:18px;background:linear-gradient(145deg,#111018,#0a0a0f);padding:18px;display:flex;flex-direction:column;justify-content:space-between;transition:.18s}.project-card:hover{transform:translateY(-2px);border-color:#4b3b61}.project-card h3{margin:0 0 7px;font-size:17px}.project-card p{margin:0;color:#777481;font-size:11px;line-height:1.5}.project-meta{color:#696572;font-size:10px;margin-top:12px}.project-open{width:100%;margin-top:13px}.catalog-empty{padding:35px;border:1px dashed #2b2734;border-radius:16px;color:#777481;text-align:center}.user-area{display:flex;align-items:center;gap:7px;margin-left:4px}.user-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid #3a3444;background:#17131f}.signout-btn{border:0;background:transparent;color:#777481;font-size:11px;padding:6px}.signout-btn:hover{color:#fff}.project-name-input{width:min(320px,34vw);min-width:110px;border:0;background:transparent;color:#f7f5fb;font-weight:600;outline:none;padding:4px 6px;border-radius:7px}.project-name-input:hover,.project-name-input:focus{background:#111018;border:1px solid #2b2934}.project-name-input::selection{background:#8f5be8}.back-to-projects{border:1px solid #2b2934;background:#0c0c11;color:#bdb9c5;border-radius:9px;padding:8px 10px}.back-to-projects:hover{border-color:#63488f;color:#fff}
+
+/* MOBILE */
+.mobile-only{display:none}
+@media(max-width:1000px){
+ .app{grid-template-columns:58px 1fr}.inspector{position:fixed;z-index:100;right:0;top:0;bottom:0;width:min(380px,92vw);height:100dvh;max-height:100dvh;transform:translateX(100%);transition:transform .22s}.inspector.open{transform:none}.backdrop.open{display:block;position:fixed;inset:0;background:#0009;z-index:90}.mobile-only{display:block}
+ .topbar{padding:0 11px;min-width:0}.save-status{display:none}.app-side{padding-top:13px}.side-btn{width:39px;height:39px}.topbar .top-btn{white-space:nowrap}.brand{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .hero{grid-template-columns:1fr;padding-top:65px}.hero-visual{height:470px}.steps{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+ .landing-shell{grid-template-columns:1fr;border-radius:0}.landing-side{display:none}.hero{padding:55px 23px 25px}.hero-visual{height:390px}.orb{width:270px}.hero-node{font-size:10px;padding:8px 10px}.hn1{top:35px;right:5%}.hn2{right:0;top:155px}.hn3{left:0;top:205px}.hn4{left:14%;bottom:55px}.hn5{right:0;bottom:30px}
+ .hero-meta{gap:18px;flex-wrap:wrap}.steps{grid-template-columns:1fr;padding:28px 22px;margin-left:23px;margin-right:23px}.landing-section{padding:60px 23px 85px}.feature-grid{grid-template-columns:1fr}.landing-footer{padding:25px 23px}
+ .app{grid-template-columns:54px 1fr}.topbar{height:59px;flex-basis:59px;gap:6px}.top-btn{padding:7px 8px;font-size:11px}.topbar #exportBtn{display:none}.brand{font-size:13px}.canvas-ai{left:10px;top:10px}.canvas-help{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LANDING / PRODUCT STORY -->
+<div id="landing" class="landing">
+ <div class="landing-shell">
+  <aside class="landing-side">
+   <div class="logo"></div>
+   <nav class="lnav"><a href="#home">Home</a><a href="#how">How it works</a><a href="#why">Why MindFlow</a><a href="#" id="navSignIn">Sign in</a></nav>
+   <div class="scroll">Scroll to<br>explore<br><b>↓</b></div>
+  </aside>
+  <main class="landing-main">
+   <section class="hero" id="home">
+    <div class="hero-copy">
+     <div class="eyebrow"><span class="dot"></span>Your mind, visualized</div>
+     <h1>Turn thoughts<br>into <em>clarity</em></h1>
+     <p>MindFlow — визуальная операционная система для мышления. Создавай мысли, соединяй их напрямую на canvas и превращай хаос в живую карту контекста.</p>
+     <button class="cta" id="signInHeroBtn">Continue with Google <span>↗</span></button>
+     <div class="hero-meta"><div><span class="stars">★★★★★</span> &nbsp;4.9/5 from 1,200+ thinkers</div><div>✦ Built for nonlinear minds</div></div>
+    </div>
+    <div class="hero-visual">
+     <div class="orb"></div>
+     <div class="hero-node hn1">💡 Idea</div><div class="hero-node hn2">▣ Project</div><div class="hero-node hn3">▤ Note</div><div class="hero-node hn4">✧ Inspiration</div><div class="hero-node hn5">✓ Task</div>
+    </div>
+   </section>
+   <section class="steps" id="how">
+    <div class="step"><div class="num">01</div><h3>Capture</h3><p>Фиксируй мысль за секунду — без сложной структуры.</p></div>
+    <div class="step"><div class="num">02</div><h3>Connect</h3><p>Потяни точку на одном блоке к другому и создай смысловую связь.</p></div>
+    <div class="step"><div class="num">03</div><h3>Understand</h3><p>Смотри на идеи как на живую систему, а не как на список заметок.</p></div>
+    <div class="step"><div class="num">04</div><h3>Act</h3><p>Превращай связанные мысли в задачи, проекты и следующие шаги.</p></div>
+   </section>
+   <section class="landing-section" id="why">
+    <h2>Not another notes app.<br><em>Your second brain.</em></h2>
+    <p>MindFlow вдохновлён knowledge graphs, mindmaps и Obsidian, но ставит визуальное мышление на первое место. Текст — внутри узла. Связи — прямо на canvas. AI — поверх структуры, а не вместо неё.</p>
+    <div class="feature-grid">
+     <div class="feature"><b>Visual first</b><span>Создавай структуру глазами: объекты, расстояния, связи и группы.</span></div>
+     <div class="feature"><b>Meaningful links</b><span>Связь может объяснять отношения: related, requires, solves, inspired by.</span></div>
+     <div class="feature"><b>Think with AI</b><span>Локальные подсказки находят пробелы, кластеры и следующие шаги.</span></div>
+    </div>
+   </section>
+   <footer class="landing-footer"><span>© 2026 MindFlow</span><span>Think differently.</span></footer>
+  </main>
+ </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+ <aside class="app-side">
+  <div class="logo"></div>
+  <button class="side-btn active" data-view="map" title="Current map">⌘</button>
+  <button class="side-btn" data-view="idea" title="Ideas">✦</button>
+  <button class="side-btn" data-view="task" title="Tasks">✓</button>
+  <button class="side-btn" data-view="note" title="Notes">▤</button>
+  <button class="side-btn" id="projectsBtn" title="Projects">▦</button>
+  <div class="side-spacer"></div>
+  <button class="side-btn" id="homeBtn" title="Sign out / welcome">⌂</button>
+ </aside>
+
+ <main class="app-main">
+  <header class="topbar">
+   <button class="back-to-projects hidden" id="backProjectsBtn">←</button>
+   <div class="brand">Mind<span>Flow</span> / <input id="projectNameInput" class="project-name-input" value="My thinking" aria-label="Project name"></div>
+   <div class="save-status" id="saveStatus">Saved locally</div>
+   <button class="top-btn" id="newBtn">＋</button><button class="top-btn" id="exportBtn">Export</button>
+   <div class="user-area"><img id="userAvatar" class="user-avatar" alt=""><button class="signout-btn" id="signOutBtn">Sign out</button></div>
+   <button class="top-btn mobile-only" id="mobilePanelBtn">☰</button>
+  </header>
+  <section id="projectsView" class="projects-view app-view-hidden"></section>
+  <div class="canvas-wrap" id="canvas">
+   <div class="world" id="world"><svg class="edges" id="edges"></svg><div id="nodes"></div><div id="edgeActionLayer"></div></div>
+   <div class="empty-app" id="emptyApp"><b>Start with a thought</b><p>Нажми +, создай блок и потяни одну из светящихся точек к другому блоку.</p></div>
+   <button class="canvas-ai" id="canvasAiBtn">✦ Think with AI · Connect isolated</button><div class="canvas-help">Scroll to move · Ctrl/⌘ + scroll to zoom · Drag node · Drag a dot to connect · Click a line to remove</div>
+   <div class="zoom-ui"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button id="zoomIn">＋</button><button id="centerBtn">◎</button></div>
+  </div>
+ </main>
+
+ <div class="backdrop" id="backdrop"></div>
+ <aside class="inspector" id="inspector">
+  <div class="ins-head">
+   <div class="ins-head-row"><div><h2 id="insTitle">Mindmap</h2><p id="insSub">Visual workspace</p></div><button class="close-btn" id="closeInspector">×</button></div>
+  </div>
+  <div class="ins-tools">
+   <button class="ins-tool primary" id="addNodeBtn">＋ Node</button>
+   <button class="ins-tool" id="connectHintBtn">⌁ How to connect</button>
+   <button class="ins-tool" id="centerSideBtn">◎ Center</button>
+   <button class="ins-tool" id="saveSideBtn">↓ Save</button>
+  </div>
+  <div class="ins-body">
+   <input class="search" id="search" placeholder="Search your thinking…">
+   <div id="insContent"></div>
+  </div>
+ </aside>
+</div>
+
+<!-- AUTH -->
+<div id="authOverlay" class="auth-overlay hidden">
+ <div class="auth-card">
+  <button class="auth-close" id="authClose">×</button>
+  <div class="eyebrow"><span class="dot"></span>Welcome to MindFlow</div>
+  <h2>Войди, чтобы сохранить свои проекты</h2>
+  <p>Сессия сохраняется на этом устройстве. Google используется для входа, а проекты хранятся локально в прототипе.</p>
+  <div class="google-btn" id="googleSignInBtn"><span class="google-mark">G</span> Continue with Google</div>
+  <p class="auth-note">Для настоящей Google-аутентификации укажи OAuth Client ID в конфигурации ниже. Локальный файл <b>file://</b> не является разрешённым origin для Google OAuth.</p>
+ </div>
+</div>
+
+<!-- FIRST-RUN TOUR -->
+<div id="tourOverlay" class="tour-overlay hidden">
+ <div class="tour-card">
+  <button class="tour-close" id="tourClose">×</button>
+  <div class="eyebrow"><span class="dot"></span>Quick tour</div>
+  <h2 id="tourTitle">Добро пожаловать в MindFlow</h2>
+  <p id="tourText"></p>
+  <div class="tour-progress" id="tourProgress"></div>
+  <div class="tour-actions"><button class="tour-skip" id="tourSkip">Пропустить</button><button class="primary" id="tourNext">Дальше →</button></div>
+ </div>
+</div>
+
+<script>
+(() => {
+ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+ const STORAGE="mindflow-projects-v3";
+ const OLD_STORAGE="mindflow-vision-v1";
+ const SESSION_STORAGE="mindflow-session-v1";
+ const GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+ const TYPES={idea:{label:"Idea",color:"#9b67ff"},note:{label:"Note",color:"#53d29a"},task:{label:"Task",color:"#ff9b52"},project:{label:"Project",color:"#62aaff"},person:{label:"Person",color:"#ed77ff"}};
+ function makeProject(name="My thinking"){return {id:uid(),name,nodes:[],edges:[],camera:{x:0,y:0,scale:1},createdAt:Date.now(),updatedAt:Date.now()}}
+ let projects=JSON.parse(localStorage.getItem(STORAGE)||"null");
+ if(!Array.isArray(projects)||!projects.length){
+   const old=JSON.parse(localStorage.getItem(OLD_STORAGE)||"null");
+   const first=old&&Array.isArray(old.nodes)?{...old,id:uid(),createdAt:Date.now(),updatedAt:Date.now(),name:old.name||"My thinking"}:makeProject();
+   projects=[first];localStorage.setItem(STORAGE,JSON.stringify(projects));
+ }
+ let activeProjectId=localStorage.getItem("mindflow-active-project")||projects[0].id;
+ let state=projects.find(p=>p.id===activeProjectId)||projects[0];
+ activeProjectId=state.id;
+ let selected=null, selectedEdge=null, editOpen=false, connectFrom=null, dragging=null, panning=null, searchTerm="", filter="map", edgeDrag=null;
+ let didDrag=false, appMode="canvas", projectSearch="", tourStep=0;
+ function currentSession(){try{return JSON.parse(localStorage.getItem(SESSION_STORAGE)||"null")}catch{return null}}
+ let session=currentSession();
+
+ function uid(){return "n"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+ function edgeUid(){return "e"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+ function node(id){return state.nodes.find(n=>n.id===id)}
+ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+ function save(){
+   state.updatedAt=Date.now();
+   const idx=projects.findIndex(p=>p.id===state.id); if(idx>=0)projects[idx]=state;
+   localStorage.setItem(STORAGE,JSON.stringify(projects));localStorage.setItem("mindflow-active-project",state.id);
+   $("#saveStatus").textContent="Saved just now";setTimeout(()=>$("#saveStatus").textContent="Saved locally",1000);
+ }
+ function toast(t){let el=document.createElement("div");el.textContent=t;el.style.cssText="position:fixed;z-index:600;right:25px;bottom:24px;padding:11px 15px;border:1px solid #3d3450;background:#15121d;color:#ddd8e7;border-radius:10px;font-size:12px;box-shadow:0 15px 40px #000";document.body.appendChild(el);setTimeout(()=>el.remove(),1800)}
+ function showApp(){ if(!session){openAuth();return} $("#landing").classList.add("hidden");$("#app").classList.remove("hidden");showProjects();updateUserUI();setTimeout(maybeShowTour,50) }
+ function showLanding(){closeInspector();$("#app").classList.add("hidden");$("#landing").classList.remove("hidden")}
+ function openAuth(){$("#authOverlay").classList.remove("hidden")}
+ function closeAuth(){$("#authOverlay").classList.add("hidden")}
+ function setSession(user){session={...user,loggedAt:Date.now()};localStorage.setItem(SESSION_STORAGE,JSON.stringify(session));closeAuth();showApp()}
+ function signOut(){localStorage.removeItem(SESSION_STORAGE);session=null;closeInspector();$("#app").classList.add("hidden");$("#landing").classList.remove("hidden");toast("Сессия завершена") }
+ function switchProject(id){const next=projects.find(p=>p.id===id);if(!next)return;$("#app").classList.remove("catalog-mode");state=next;activeProjectId=id;localStorage.setItem("mindflow-active-project",id);selected=null;selectedEdge=null;searchTerm="";filter="map";appMode="canvas";$("#projectsView").classList.add("app-view-hidden");$("#canvas").classList.remove("app-view-hidden");$("#backProjectsBtn").classList.remove("hidden");render();setTimeout(centerIfEmpty,20)}
+ function showProjects(){appMode="projects";$("#app").classList.add("catalog-mode");$("#canvas").classList.add("app-view-hidden");$("#projectsView").classList.remove("app-view-hidden");$("#backProjectsBtn").classList.add("hidden");$("#inspector").classList.remove("open");$("#backdrop").classList.remove("open");renderProjects()}
+ function newProject(){const name=prompt("Название нового проекта:","Новый проект");if(name===null)return;const p=makeProject(name.trim()||"Новый проект");projects.unshift(p);state=p;activeProjectId=p.id;localStorage.setItem(STORAGE,JSON.stringify(projects));localStorage.setItem("mindflow-active-project",p.id);switchProject(p.id);toast("Проект создан")}
+ function renameProject(value){const name=value.trim()||"Untitled project";state.name=name;save();$("#projectNameInput").value=name;renderProjects()}
+ function deleteProject(id){if(projects.length<=1){toast("Нельзя удалить последний проект");return}const p=projects.find(x=>x.id===id);if(!p)return;if(!confirm(`Удалить проект «${p.name}»?`))return;projects=projects.filter(x=>x.id!==id);localStorage.setItem(STORAGE,JSON.stringify(projects));if(state.id===id){state=projects[0];activeProjectId=state.id;localStorage.setItem("mindflow-active-project",state.id)}renderProjects();toast("Проект удалён")}
+ function openInspector(){editOpen=true;$("#inspector").classList.add("open");$("#backdrop").classList.add("open");renderInspector()}
+ function closeInspector(){editOpen=false;connectFrom=null;$("#inspector").classList.remove("open");$("#backdrop").classList.remove("open");render()}
+ function addNode(x,y,type="idea"){
+   const w=$("#canvas").clientWidth,h=$("#canvas").clientHeight;
+   const cx=(w/2-state.camera.x)/state.camera.scale,cy=(h/2-state.camera.y)/state.camera.scale;
+   const n={id:uid(),x:x??cx-80,y:y??cy-45,type,title:type==="task"?"New task":type==="project"?"New project":"New thought",body:"Add context…",done:false};
+   state.nodes.push(n);selected=n.id;save();render();openInspector();setTimeout(()=>{$("#titleInput")?.focus();$("#titleInput")?.select()},50)
+ }
+ function removeNode(id){state.nodes=state.nodes.filter(n=>n.id!==id);state.edges=state.edges.filter(e=>e.a!==id&&e.b!==id);if(selected===id)selected=null;save();renderInspector();render()}
+ function addEdge(a,b,kind="related"){
+   if(!a||!b||a===b||state.edges.some(e=>(e.a===a&&e.b===b)||(e.a===b&&e.b===a)))return false;
+   state.edges.push({id:edgeUid(),a,b,kind});save();render();return true
+ }
+ function removeEdge(id){state.edges=state.edges.filter(e=>e.id!==id);save();renderInspector();render()}
+ function nodeCenter(n){return {x:n.x+72,y:n.y+34}}
+ function screenPoint(e){const r=$("#canvas").getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+ function worldPoint(e){const p=screenPoint(e);return{x:(p.x-state.camera.x)/state.camera.scale,y:(p.y-state.camera.y)/state.camera.scale}}
+ function setCamera(x,y,s=state.camera.scale){state.camera={x,y,scale:Math.max(.35,Math.min(2.2,s))};applyCamera()}
+ function applyCamera(){const w=$("#world");w.style.transform=`translate(${state.camera.x}px,${state.camera.y}px) scale(${state.camera.scale})`;$("#zoomLabel").textContent=Math.round(state.camera.scale*100)+"%"}
+ function centerMap(){
+   if(!state.nodes.length){setCamera(0,0,1);return}
+   const xs=state.nodes.map(n=>n.x+72),ys=state.nodes.map(n=>n.y+34),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+   const cw=$("#canvas").clientWidth,ch=$("#canvas").clientHeight, bw=Math.max(240,maxX-minX),bh=Math.max(180,maxY-minY);
+   const s=Math.max(.55,Math.min(1.25,Math.min((cw-100)/bw,(ch-100)/bh)));
+   setCamera(cw/2-(minX+maxX)/2*s,ch/2-(minY+maxY)/2*s,s);save()
+ }
+ function centerIfEmpty(){if(state.nodes.length===0)setCamera(0,0,1);applyCamera()}
+ function visibleNodes(){return state.nodes.filter(n=>{
+   const typeOk=filter==="map"||n.type===filter;
+   const q=searchTerm.trim().toLowerCase();
+   const searchOk=!q||`${n.title} ${n.body} ${n.type}`.toLowerCase().includes(q);
+   return typeOk&&searchOk;
+ })}
+ function render(){
+   if(selectedEdge && !state.edges.some(e=>e.id===selectedEdge)) selectedEdge=null;
+   $("#projectNameInput").value=state.name;$("#emptyApp").style.display=state.nodes.length?"none":"block";applyCamera();
+   const wrap=$("#nodes");wrap.innerHTML="";
+   const visible=new Set(visibleNodes().map(n=>n.id));
+   state.nodes.forEach(n=>{
+     const el=document.createElement("div");el.className=`node ${n.type} ${selected===n.id?"selected":""} ${connectFrom===n.id?"connecting":""} ${visible.has(n.id)?"":"dim"}`;
+     el.dataset.id=n.id;el.style.left=n.x+"px";el.style.top=n.y+"px";
+     el.innerHTML=`<button class="port top" data-port="top" aria-label="connect"></button><button class="port right" data-port="right" aria-label="connect"></button><button class="port bottom" data-port="bottom" aria-label="connect"></button><button class="port left" data-port="left" aria-label="connect"></button><div class="type">${TYPES[n.type]?.label||n.type}</div><div class="title"></div><div class="body"></div>`;
+     el.querySelector(".title").textContent=n.title;el.querySelector(".body").textContent=n.body;
+     if(n.done){el.style.opacity=visible.has(n.id)?".62":".12";el.querySelector(".title").style.textDecoration="line-through"}
+     el.addEventListener("pointerdown",onNodeDown);el.addEventListener("click",onNodeClick);el.addEventListener("dblclick",e=>{e.stopPropagation();selected=n.id;selectedEdge=null;openInspector()});
+     el.querySelectorAll(".port").forEach(p=>p.addEventListener("pointerdown",e=>startEdgeDrag(e,n.id,p.dataset.port)));
+     wrap.appendChild(el)
+   });
+   drawEdges();renderInspector()
+ }
+ function drawEdges(){
+   const svg=$("#edges"), layer=$("#edgeActionLayer");svg.innerHTML="";layer.innerHTML="";
+   state.edges.forEach(e=>{
+     const a=node(e.a),b=node(e.b);if(!a||!b)return;
+     const A=nodeCenter(a),B=nodeCenter(b),isSel=e.id===selectedEdge;
+     const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+     line.classList.add("edge");if(e.a===selected||e.b===selected||isSel)line.classList.add("sel");
+     line.setAttribute("x1",A.x);line.setAttribute("y1",A.y);line.setAttribute("x2",B.x);line.setAttribute("y2",B.y);svg.appendChild(line);
+     const hit=document.createElementNS("http://www.w3.org/2000/svg","line");
+     hit.classList.add("edge-hit");hit.setAttribute("x1",A.x);hit.setAttribute("y1",A.y);hit.setAttribute("x2",B.x);hit.setAttribute("y2",B.y);
+     hit.addEventListener("click",ev=>{ev.stopPropagation();selectedEdge=e.id;selected=null;drawEdges();renderInspector()});
+     hit.addEventListener("dblclick",ev=>{ev.stopPropagation();removeEdge(e.id);toast("Connection removed")});
+     hit.addEventListener("contextmenu",ev=>{ev.preventDefault();ev.stopPropagation();removeEdge(e.id);selectedEdge=null;toast("Connection removed")});
+     svg.appendChild(hit);
+     const mid=document.createElementNS("http://www.w3.org/2000/svg","text");
+     mid.setAttribute("x",(A.x+B.x)/2);mid.setAttribute("y",(A.y+B.y)/2-6);mid.setAttribute("fill",isSel?"#b98eff":"#6d6878");mid.setAttribute("font-size","9");mid.setAttribute("text-anchor","middle");mid.textContent=e.kind;mid.style.pointerEvents="none";svg.appendChild(mid);
+     if(isSel){
+       const action=document.createElement("button");action.className="edge-action";
+       action.style.left=((A.x+B.x)/2)+"px";action.style.top=((A.y+B.y)/2)+"px";
+       action.innerHTML=`<span class="edge-kind">${esc(e.kind)}</span><span>× Remove</span>`;
+       action.onclick=ev=>{ev.stopPropagation();removeEdge(e.id);selectedEdge=null;toast("Connection removed")};
+       layer.appendChild(action);
+     }
+   });
+   if(edgeDrag){
+     const a=node(edgeDrag.from),p=edgeDrag.to;
+     if(a&&p){const A=nodeCenter(a);const line=document.createElementNS("http://www.w3.org/2000/svg","line");line.classList.add("edge","sel");line.setAttribute("x1",A.x);line.setAttribute("y1",A.y);line.setAttribute("x2",p.x);line.setAttribute("y2",p.y);svg.appendChild(line)}
+   }
+ } 
+ function renderProjects(){
+   const box=$("#projectsView");if(!box)return;
+   const q=projectSearch.trim().toLowerCase();
+   const list=projects.filter(p=>!q||p.name.toLowerCase().includes(q));
+   box.innerHTML=`<div class="catalog-head"><div><h1>Projects</h1><p>${projects.length} ${projects.length===1?"project":"projects"} · все твои карты в одном месте</p></div><div class="catalog-actions"><input class="catalog-search" id="projectSearch" value="${esc(projectSearch)}" placeholder="Search projects…"><button class="catalog-new" id="catalogNew">＋ New project</button></div></div>${list.length?`<div class="project-grid">${list.map(p=>`<article class="project-card"><div><h3>${esc(p.name)}</h3><p>${p.nodes.length} nodes · ${p.edges.length} connections</p><div class="project-meta">Updated ${new Date(p.updatedAt||Date.now()).toLocaleDateString()}</div></div><div><button class="project-open" data-open-project="${p.id}">Open project →</button><button data-delete-project="${p.id}" style="margin-top:7px;width:100%;border:0;background:transparent;color:#6f6978;font-size:10px">Delete</button></div></article>`).join("")}</div>`:`<div class="catalog-empty">Ничего не найдено. Создай новый проект или измени запрос.</div>`}`;
+   $("#projectSearch").oninput=e=>{projectSearch=e.target.value;renderProjects()};
+   $("#catalogNew").onclick=newProject;
+   box.querySelectorAll("[data-open-project]").forEach(b=>b.onclick=()=>switchProject(b.dataset.openProject));
+   box.querySelectorAll("[data-delete-project]").forEach(b=>b.onclick=()=>deleteProject(b.dataset.deleteProject));
+ }
+ const TOUR_STEPS=[
+   ["Проекты", "Здесь будет каталог всех твоих карт. Создавай отдельные проекты для разных тем, задач или исследований."],
+   ["Canvas", "Внутри проекта нажми ＋, чтобы создать мысль. Блоки можно перетаскивать по canvas, менять название, описание и тип."],
+   ["Связи", "Потяни светящуюся точку на краю блока к другому блоку. Связи показывают структуру твоего мышления."],
+   ["Think with AI", "Кнопка на canvas запускает Connect All Isolated: алгоритм ищет осмысленные связи, учитывает текст, тип и расстояние и проверяет связность графа."],
+   ["Название проекта", "Название можно менять прямо в верхней панели. Все изменения и проекты сохраняются локально на этом устройстве."]
+ ];
+ function maybeShowTour(){if(!session)return;if(localStorage.getItem("mindflow-tour-seen-v1"))return;openTour()}
+ function openTour(){tourStep=0;$("#tourOverlay").classList.remove("hidden");renderTour()}
+ function closeTour(){localStorage.setItem("mindflow-tour-seen-v1","1");$("#tourOverlay").classList.add("hidden")}
+ function renderTour(){const s=TOUR_STEPS[tourStep];$("#tourTitle").textContent=s[0];$("#tourText").textContent=s[1];$("#tourProgress").innerHTML=TOUR_STEPS.map((_,i)=>`<span class="${i<=tourStep?"active":""}"></span>`).join("");$("#tourNext").textContent=tourStep===TOUR_STEPS.length-1?"Начать работу →":"Дальше →"}
+ function nextTour(){if(tourStep<TOUR_STEPS.length-1){tourStep++;renderTour()}else closeTour()}
+ function updateUserUI(){if(!session)return;$("#userAvatar").src=session.picture||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Crect width='30' height='30' rx='15' fill='%23171222'/%3E%3Ctext x='15' y='20' text-anchor='middle' fill='white' font-size='14'%3E✦%3C/text%3E%3C/svg%3E";$("#projectNameInput").value=state.name}
+ function handleGoogleCredential(response){try{const payload=JSON.parse(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));setSession({sub:payload.sub,name:payload.name,email:payload.email,picture:payload.picture})}catch{toast("Не удалось прочитать ответ Google")}}
+ function initGoogle(){
+   if(!window.google?.accounts?.id)return;
+   if(GOOGLE_CLIENT_ID.startsWith("YOUR_"))return;
+   try{google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});google.accounts.id.renderButton($("#googleSignInBtn"),{theme:"outline",size:"large",width:420,text:"continue_with"});}catch(err){console.warn(err)}
+ }
+ function renderInspector(){
+   const count=state.nodes.length,edges=state.edges.length;
+   $("#insTitle").textContent=filter==="map"?"Mindmap":(TYPES[filter]?.label||filter);
+   const visibleCount=visibleNodes().length;
+   $("#insSub").textContent=filter==="map"?`${count} nodes · ${edges} connections`:`${visibleCount} ${TYPES[filter]?.label||filter} · ${edges} connections`;
+   const box=$("#insContent");
+   let selectedNode=selected?node(selected):null;
+   let html="";
+   if(selectedEdge && !selectedNode){
+     const ce=state.edges.find(e=>e.id===selectedEdge),a=ce&&node(ce.a),b=ce&&node(ce.b);
+     if(ce&&a&&b) html+=`<div class="insight"><b>Connection</b>${esc(a.title)} ↔ ${esc(b.title)}<br><span style="color:#777481">${esc(ce.kind)}</span></div><button class="danger" id="deleteEdgeInput">Delete connection</button>`;
+   }else if(selectedNode){
+     const links=state.edges.filter(e=>e.a===selectedNode.id||e.b===selectedNode.id).map(e=>({e,n:node(e.a===selectedNode.id?e.b:e.a)})).filter(x=>x.n);
+     html+=`<div class="field"><label>NAME</label><input id="titleInput" value="${esc(selectedNode.title)}"></div>
+     <div class="field"><label>CONTEXT</label><textarea id="bodyInput">${esc(selectedNode.body)}</textarea></div>
+     <div class="row"><div class="field"><label>TYPE</label><select id="typeInput">${Object.entries(TYPES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("")}</select></div>
+     <div class="field"><label>STATUS</label><button id="doneInput" class="ins-tool" style="width:100%;text-align:left">${selectedNode.done?"● Done":"○ Open"}</button></div></div>
+     <div class="field"><label>CONNECTIONS (${links.length})</label>${links.length?links.map(x=>`<div class="conn"><span>↔ ${esc(x.n.title)} <small style="color:#666">· ${esc(x.e.kind)}</small></span><button data-edge="${x.e.id}">×</button></div>`).join(""):`<div class="ins-empty">Пока нет связей. Потяни любую точку на краю блока и отпусти её на другом блоке.</div>`}</div>
+     <button class="danger" id="deleteInput">Delete node</button>`;
+   }else{
+     html+=`<div class="ins-empty"><b style="color:#ddd8e6;display:block;margin-bottom:5px">Canvas first.</b>Обычный клик выбирает блок. Двойной клик открывает редактор. Для связи потяни маленькую точку на краю блока к другому блоку.</div>
+     <div style="height:12px"></div>
+     <div class="insight ai-card"><div class="ai-title"><span class="ai-spark">✦</span><b>MindFlow Copilot</b></div><div class="ai-answer" id="aiAnswer">${buildInsight()}</div><div class="ai-input"><input id="aiInput" placeholder="Спроси про свою карту…"><button id="aiAsk">Ask</button></div><div id="aiActions">${buildAiActions()}</div></div>
+     <div style="height:8px"></div><div class="field"><label>FILTER</label><select id="filterInput"><option value="map">Everything</option>${Object.entries(TYPES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("")}</select></div>`;
+   }
+   box.innerHTML=html;
+   const searchEl=$("#search"); if(searchEl){searchEl.value=searchTerm;searchEl.oninput=e=>{searchTerm=e.target.value;render()}; }
+   if($("#aiAsk")) $("#aiAsk").onclick=()=>askAi($("#aiInput").value);
+   if($("#aiInput")) $("#aiInput").addEventListener("keydown",e=>{if(e.key==="Enter")askAi(e.target.value)});
+   if(selectedNode){
+     $("#typeInput").value=selectedNode.type;
+     $("#titleInput").oninput=e=>{selectedNode.title=e.target.value;save();updateNode(selectedNode.id)};
+     $("#bodyInput").oninput=e=>{selectedNode.body=e.target.value;save();updateNode(selectedNode.id)};
+     $("#typeInput").onchange=e=>{selectedNode.type=e.target.value;save();render()};
+     $("#doneInput").onclick=()=>{selectedNode.done=!selectedNode.done;save();render()};
+     $("#deleteInput").onclick=()=>{removeNode(selectedNode.id);toast("Node deleted")};
+     box.querySelectorAll("[data-edge]").forEach(b=>b.onclick=()=>{removeEdge(b.dataset.edge);render()})
+   }else if(selectedEdge){
+     if($("#deleteEdgeInput")) $("#deleteEdgeInput").onclick=()=>{const id=selectedEdge;selectedEdge=null;removeEdge(id);toast("Connection removed")};
+   }else{
+     $("#filterInput").value=filter;$("#filterInput").onchange=e=>{filter=e.target.value;render()}; bindAiActions();
+   }
+ }
+ function updateNode(id){const n=node(id),el=document.querySelector(`.node[data-id="${id}"]`);if(el){el.querySelector(".title").textContent=n.title;el.querySelector(".body").textContent=n.body}}
+ function buildAiActions(){
+   if(!state.nodes.length)return "";
+   const isolated=state.nodes.filter(n=>!state.edges.some(e=>e.a===n.id||e.b===n.id));
+   const task=state.nodes.find(n=>n.type==="task"&&!n.done);
+   const project=state.nodes.find(n=>n.type==="project");
+   let actions="";
+   if(isolated.length>=1) actions+=`<button class="ai-action" data-ai="connect-isolated">✦ Connect all isolated nodes intelligently</button>`;
+   if(task&&project) actions+=`<button class="ai-action" data-ai="link-task-project">＋ Connect an open task to a project</button>`;
+   return actions;
+ }
+ function askAi(question){
+   const q=(question||"").trim().toLowerCase();
+   const answer=$("#aiAnswer"),actions=$("#aiActions");
+   if(!answer)return;
+   let text="";
+   if(!q){text=buildInsight()}
+   else if(q.includes("связ")||q.includes("connect")||q.includes("connection")){
+     const isolated=state.nodes.filter(n=>!state.edges.some(e=>e.a===n.id||e.b===n.id));
+     text=isolated.length?`Я вижу ${isolated.length} изолированных узла. Самый безопасный следующий шаг — выбрать один и связать его с ближайшей по смыслу идеей.`:"Все узлы уже участвуют хотя бы в одной связи. Попробуй добавить семантику связи или новый контекст.";
+   }else if(q.includes("задач")||q.includes("task")){
+     const tasks=state.nodes.filter(n=>n.type==="task");
+     text=tasks.length?`На карте ${tasks.length} задач. ${tasks.filter(n=>!n.done).length} ещё открыты. Я бы связал каждую задачу с проектом или проблемой, которую она двигает.`:"Задач пока нет. Создай Task через + Node и свяжи её с идеей.";
+   }else if(q.includes("иде")||q.includes("idea")){
+     const ideas=state.nodes.filter(n=>n.type==="idea");
+     text=`Сейчас на карте ${ideas.length} ${ideas.length===1?"идея":"идеи"}. ${ideas.length? "Посмотри, какие из них не имеют связей — там часто скрывается следующий инсайт.":"Создай первую Idea и начни от неё строить карту."}`;
+   }else{
+     text=`Я посмотрел на ${state.nodes.length} узлов и ${state.edges.length} связей. ${buildInsight()}`;
+   }
+   answer.textContent=text;
+   actions.innerHTML=buildAiActions();
+   bindAiActions();
+ }
+ function normalizeTokens(value){
+    const stop=new Set("и в во на по из за с со к у о об от до для это как что а но или же не ни мы вы они он она оно их его ее про при над под без уже ещё еще свой свою".split(/\s+/));
+    return String(value||"").toLowerCase().replace(/[^a-zа-яё0-9\s-]/gi," ").split(/\s+/).filter(w=>w.length>2&&!stop.has(w));
+  }
+ function tokenSimilarity(a,b){
+    const A=new Set(normalizeTokens(a)),B=new Set(normalizeTokens(b)); if(!A.size||!B.size)return 0;
+    let hit=0; A.forEach(x=>{if(B.has(x))hit++}); return hit/(A.size+B.size-hit);
+  }
+ function typeCompatibility(a,b){
+    if(a===b)return .72;
+    const pairs=[["task","project"],["task","idea"],["task","note"],["project","idea"],["project","person"],["note","idea"],["note","person"],["person","idea"]];
+    return pairs.some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a))?.95:.28;
+  }
+ function edgeScore(a,b){
+    const semantic=tokenSimilarity(a.title,b.title)*.45+
+      tokenSimilarity(`${a.title} ${a.body}`,`${b.title} ${b.body}`)*.30+
+      typeCompatibility(a.type,b.type)*.15;
+    const distance=Math.hypot(a.x-b.x,a.y-b.y),proximity=1/(1+distance/420);
+    const degree=state.edges.filter(e=>e.a===b.id||e.b===b.id).length;
+    return semantic+proximity*.10+Math.min(.10,degree*.025);
+  }
+ function graphComponents(){
+    const adj=new Map(state.nodes.map(n=>[n.id,[]]));
+    state.edges.forEach(e=>{if(adj.has(e.a)&&adj.has(e.b)){adj.get(e.a).push(e.b);adj.get(e.b).push(e.a)}});
+    const seen=new Set(),out=[];
+    state.nodes.forEach(start=>{
+      if(seen.has(start.id))return;
+      const stack=[start.id],comp=[];seen.add(start.id);
+      while(stack.length){const id=stack.pop();comp.push(id);for(const next of adj.get(id)||[]){if(!seen.has(next)){seen.add(next);stack.push(next)}}}
+      out.push(comp);
+    });
+    return out;
+  }
+ function bestBridge(aIds,bIds){
+    let best=null;
+    for(const aid of aIds)for(const bid of bIds){
+      const a=node(aid),b=node(bid); if(!a||!b)continue;
+      const score=edgeScore(a,b); if(!best||score>best.score)best={a,b,score};
+    }
+    return best;
+  }
+ function connectAllIsolated(){
+    const beforeEdges=state.edges.length;
+    const isolated=state.nodes.filter(n=>!state.edges.some(e=>e.a===n.id||e.b===n.id));
+    if(state.nodes.length<2)return {added:0,connected:true,message:"Нужно минимум два узла."};
+
+    let components=graphComponents(),connectedIds=new Set();
+
+    // If everything is isolated, choose a semantically central seed and grow a tree from it.
+    if(components.length===state.nodes.length){
+      let seed=state.nodes[0],best=-Infinity;
+      for(const candidate of state.nodes){
+        const score=state.nodes.reduce((sum,n)=>sum+(n===candidate?0:edgeScore(candidate,n)),0);
+        if(score>best){best=score;seed=candidate;}
+      }
+      connectedIds.add(seed.id);
+    }else{
+      // Existing connected nodes form the initial graph core.
+      components.filter(c=>c.length>1).forEach(c=>c.forEach(id=>connectedIds.add(id)));
+    }
+
+    // One best connection per isolated node; newly attached nodes can then support the next one.
+    for(const iso of isolated){
+      const candidates=state.nodes.filter(n=>n.id!==iso.id&&connectedIds.has(n.id)&&
+        !state.edges.some(e=>(e.a===iso.id&&e.b===n.id)||(e.a===n.id&&e.b===iso.id)));
+      if(!candidates.length)continue;
+      const target=candidates.reduce((best,n)=>{
+        const score=edgeScore(iso,n); return !best||score>best.score?{node:n,score}:best;
+      },null)?.node;
+      if(target&&addEdge(iso.id,target.id))connectedIds.add(iso.id);
+    }
+
+    // If the original map had multiple components, bridge them with the smallest possible number of edges.
+    components=graphComponents();
+    while(components.length>1){
+      let best=null;
+      for(let i=0;i<components.length;i++)for(let j=i+1;j<components.length;j++){
+        const bridge=bestBridge(components[i],components[j]);
+        if(bridge&&(!best||bridge.score>best.score))best={i,j,...bridge};
+      }
+      if(!best)break;
+      addEdge(best.a.id,best.b.id);
+      components=graphComponents();
+    }
+
+    const finalComponents=graphComponents();
+    const isolatedAfter=state.nodes.filter(n=>!state.edges.some(e=>e.a===n.id||e.b===n.id)).length;
+    save();
+    const added=state.edges.length-beforeEdges;
+    return {
+      added,isolatedBefore:isolated.length,isolatedAfter,
+      connected:finalComponents.length<=1,
+      message:finalComponents.length<=1
+        ? `Готово: добавлено ${added} минимально необходимых связей. Карта стала связным графом.`
+        : `Добавлено ${added} связей, но карта всё ещё состоит из ${finalComponents.length} компонентов.`
+    };
+  }
+ function showConnectResult(result){
+    const answer=$("#aiAnswer"); if(answer)answer.textContent=result.message;
+    const actions=$("#aiActions"); if(actions){actions.innerHTML=buildAiActions();bindAiActions();}
+    toast(result.message);
+  }
+
+ function bindAiActions(){
+   document.querySelectorAll("[data-ai]").forEach(b=>b.onclick=()=>{
+     if(b.dataset.ai==="connect-isolated"){
+       selected=null;selectedEdge=null;
+       const result=connectAllIsolated();
+       renderInspector();render();showConnectResult(result);
+     }
+     if(b.dataset.ai==="link-task-project"){
+       const task=state.nodes.find(n=>n.type==="task"&&!n.done),project=state.nodes.find(n=>n.type==="project");
+       if(task&&project){addEdge(task.id,project.id);selected=task.id;toast(`Connected “${task.title}” → “${project.title}”`)}
+     }
+     renderInspector();render();
+   });
+ }
+ function buildInsight(){
+   if(!state.nodes.length)return "Создай первую мысль — дальше карта начнёт показывать структуру.";
+   const isolated=state.nodes.filter(n=>!state.edges.some(e=>e.a===n.id||e.b===n.id)).length;
+   const tasks=state.nodes.filter(n=>n.type==="task"&&!n.done).length;
+   const projects=state.nodes.filter(n=>n.type==="project").length;
+   if(isolated===state.nodes.length)return "У тебя пока нет связей. Попробуй соединить две мысли — это и есть основной язык MindFlow.";
+   if(isolated>0)return `Я вижу ${isolated} ${isolated===1?"изолированный узел":"изолированных узла"}. Возможно, стоит связать их с существующей идеей.`;
+   if(tasks)return `На карте ${tasks} открытых задач. Хороший следующий шаг — связать их с проектами или проблемами, которые они решают.`;
+   if(projects)return "Карта выглядит связанной. Попробуй добавить задачи к проектам — так идеи превращаются в действие.";
+   return "Связи сформированы. Попробуй добавить ещё один слой контекста: Note, Person или Task.";
+ }
+ function onNodeDown(e){
+   if(e.button!==0)return;
+   const el=e.currentTarget,id=el.dataset.id;
+   if(e.target.classList.contains("port"))return;
+   e.stopPropagation();selected=id;selectedEdge=null;didDrag=false;
+   if(connectFrom){if(connectFrom!==id&&addEdge(connectFrom,id)){toast("Connection created");connectFrom=null;render()}return}
+   const p=screenPoint(e),n=node(id);dragging={id,dx:(p.x-state.camera.x)/state.camera.scale-n.x,dy:(p.y-state.camera.y)/state.camera.scale-n.y,pointer:e.pointerId};el.setPointerCapture?.(e.pointerId);render()
+ }
+ function onNodeClick(e){e.stopPropagation();if(didDrag){didDrag=false;return}selected=e.currentTarget.dataset.id;selectedEdge=null;render()}
+ function startEdgeDrag(e,id){
+   e.stopPropagation();e.preventDefault();selected=id;connectFrom=id;edgeDrag={from:id,to:screenPoint(e)};render();
+   const move=ev=>{edgeDrag.to=worldPoint(ev);drawEdges()};
+   const up=ev=>{document.removeEventListener("pointermove",move);document.removeEventListener("pointerup",up);const target=ev.target.closest?.(".node");if(target&&target.dataset.id!==id){if(addEdge(id,target.dataset.id))toast("Connection created")}else toast("Drop the connection on another node");connectFrom=null;edgeDrag=null;render()};
+   document.addEventListener("pointermove",move);document.addEventListener("pointerup",up,{once:true})
+ }
+ $("#canvas").addEventListener("pointermove",e=>{
+   if(!dragging)return;didDrag=true;const p=screenPoint(e),n=node(dragging.id);n.x=Math.max(-200,(p.x-state.camera.x)/state.camera.scale-dragging.dx);n.y=Math.max(-100,(p.y-state.camera.y)/state.camera.scale-dragging.dy);const el=document.querySelector(`.node[data-id="${n.id}"]`);if(el){el.style.left=n.x+"px";el.style.top=n.y+"px"}drawEdges()
+ });
+ $("#canvas").addEventListener("pointerup",()=>{if(dragging){dragging=null;save()}});
+ $("#canvas").addEventListener("pointerdown",e=>{
+   if(e.target!==$("#canvas")&&e.target!==$("#world"))return;
+   if(e.pointerType==="touch"||e.button===1||e.shiftKey){
+     panning={x:e.clientX,y:e.clientY,cx:state.camera.x,cy:state.camera.y,pointer:e.pointerId};
+     $("#canvas").setPointerCapture?.(e.pointerId);
+     return;
+   }
+   selected=null;selectedEdge=null;render()
+ });
+ document.addEventListener("pointermove",e=>{if(panning){state.camera.x=panning.cx+(e.clientX-panning.x);state.camera.y=panning.cy+(e.clientY-panning.y);applyCamera();drawEdges()}});
+ document.addEventListener("pointerup",()=>{if(panning){panning=null;save()}});
+ $("#canvas").addEventListener("wheel",e=>{
+   e.preventDefault();
+   if(e.ctrlKey||e.metaKey){
+     const p=screenPoint(e),old=state.camera.scale,factor=e.deltaY<0?1.1:.9,newS=Math.max(.35,Math.min(2.2,old*factor));
+     state.camera.x=p.x-(p.x-state.camera.x)*(newS/old);state.camera.y=p.y-(p.y-state.camera.y)*(newS/old);state.camera.scale=newS;
+   }else{
+     state.camera.x-=e.deltaX||0;
+     state.camera.y-=e.deltaY||0;
+   }
+   applyCamera();drawEdges();
+ },{passive:false});
+ $("#signInHeroBtn").onclick=openAuth;
+ $("#navSignIn").onclick=e=>{e.preventDefault();openAuth()};
+ $("#authClose").onclick=closeAuth;
+ $("#googleSignInBtn").onclick=()=>{if(GOOGLE_CLIENT_ID.startsWith("YOUR_")){toast("Укажи GOOGLE_CLIENT_ID в коде для реального входа Google");return}initGoogle()};
+ $("#tourClose").onclick=closeTour;
+ $("#tourSkip").onclick=closeTour;
+ $("#tourNext").onclick=nextTour;
+ $("#signOutBtn").onclick=signOut;
+ $("#homeBtn").onclick=showLanding;
+ $("#projectsBtn").onclick=showProjects;
+ $("#backProjectsBtn").onclick=showProjects;
+ $("#projectNameInput").addEventListener("change",e=>renameProject(e.target.value));
+ $("#projectNameInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();e.target.blur()}});
+ $("#canvasAiBtn").onclick=()=>{selected=null;selectedEdge=null;openInspector();const result=connectAllIsolated();renderInspector();render();showConnectResult(result);};
+ $("#newBtn").onclick=()=>addNode();
+ $("#addNodeBtn").onclick=()=>addNode();
+ $("#closeInspector").onclick=closeInspector;
+ $("#backdrop").onclick=closeInspector;
+ $("#mobilePanelBtn").onclick=()=>{$("#inspector").classList.add("open");$("#backdrop").classList.add("open")};
+ $("#centerBtn").onclick=()=>{centerMap();toast("Map centered")};
+ $("#centerSideBtn").onclick=()=>{centerMap();toast("Map centered")};
+ $("#saveSideBtn").onclick=()=>{save();toast("Saved locally")};
+ $("#connectHintBtn").onclick=()=>toast("Потяни точку на краю блока к другому блоку");
+ $("#zoomIn").onclick=()=>{setCamera(state.camera.x,state.camera.y,state.camera.scale*1.12);drawEdges()};
+ $("#zoomOut").onclick=()=>{setCamera(state.camera.x,state.camera.y,state.camera.scale*.89);drawEdges()};
+ $("#exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="mindflow-map.json";a.click();URL.revokeObjectURL(a.href);toast("Map exported")};
+ $$(".side-btn[data-view]").forEach(b=>b.onclick=()=>{filter=b.dataset.view==="map"?"map":b.dataset.view;$$(".side-btn[data-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
+ document.addEventListener("keydown",e=>{
+   // Не перехватываем пробел, Delete и Escape внутри полей редактирования.
+   // Иначе глобальные hotkeys ломают ввод названий и описаний узлов.
+   const target=e.target;
+   const isEditing=target instanceof HTMLInputElement ||
+                   target instanceof HTMLTextAreaElement ||
+                   target instanceof HTMLSelectElement ||
+                   target.isContentEditable;
+   if(isEditing){
+     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k")return;
+     if(e.key==="Escape")return;
+     return;
+   }
+   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#search")?.focus();return}
+   if(e.key==="Escape"){if(editOpen)closeInspector();else{selected=null;render()}return}
+   if(e.key==="Delete"&&selected){removeNode(selected);toast("Node deleted")}
+   if(e.code==="Space"&&!e.repeat){e.preventDefault()}
+ });
+ updateUserUI();
+ if(session){$("#landing").classList.add("hidden");$("#app").classList.remove("hidden");showProjects();setTimeout(maybeShowTour,50)}
+ setTimeout(initGoogle,700);
+ window.addEventListener("resize",()=>{if(!$("#app").classList.contains("hidden")){applyCamera();drawEdges()}});
+})();
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+</html>
